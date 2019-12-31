@@ -11,31 +11,31 @@ class PyCrawl:
             if self != []:
                 return self[0].xpath(locator, single)
             else:
-                return Crawling(doc=None).xpath(locator, single)
+                return PyCrawl(doc=None).xpath(locator, single)
 
         def css(self, locator, single=False):
             if self != []:
                 return self[0].css(locator, single)
             else:
-                return Crawling(doc=None).css(locator, single)
+                return PyCrawl(doc=None).css(locator, single)
 
         def attr(self, name):
             if self != []:
                 return self[0].attr(name)
             else:
-                return Crawling(doc=None).attr(name)
+                return PyCrawl(doc=None).attr(name)
 
         def innerText(self, shaping=True):
             if self != []:
                 return self[0].innerText(shaping)
             else:
-                return Crawling(doc=None).innerText(shaping)
+                return PyCrawl(doc=None).innerText(shaping)
 
         def outerText(self):
             if self != []:
                 return self[0].outerText()
             else:
-                return Crawling(doc=None).outerText()
+                return PyCrawl(doc=None).outerText()
 
     def __init__(self, url=None, doc=None, html=None):
         ## -----*----- コンストラクタ -----*----- ##
@@ -111,7 +111,7 @@ class PyCrawl:
 
     def xpath(self, locator, single=False):
         ## -----*----- HTMLからXPath指定で要素取得 -----*----- ##
-        elements = self.CrawList([Crawling(doc=node) for node in self.doc.xpath(locator)])
+        elements = self.CrawList([PyCrawl(doc=node) for node in self.doc.xpath(locator)])
         if single:
             # シングルノード
             if elements == []:
@@ -124,7 +124,7 @@ class PyCrawl:
 
     def css(self, locator, single=False):
         ## -----*----- HTMLからCSSセレクタで要素取得 -----*----- ##
-        elements = self.CrawList([Crawling(doc=node) for node in self.doc.cssselect(locator)])
+        elements = self.CrawList([PyCrawl(doc=node) for node in self.doc.cssselect(locator)])
         if single:
             # シングルノード
             if elements == []:
