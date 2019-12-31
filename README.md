@@ -11,7 +11,25 @@ You can also send forms such as text data, files, and checkboxes.
 
 ## Requirement
 
-- macOS Mojave 10.14.6
-- Python 3.5.2
-- mechanize 0.4.3
-- lxml 3.6.0
+- Python3
+- mechanize
+- lxml
+
+
+## Usage
+### Simple Example
+```python
+import pycrawl
+
+url = 'http://www.example.com/'
+doc = pycrawl.PyCrawl(url)
+
+# Search for nodes by css
+doc.css('div')
+doc.css('.main-text')
+doc.css('#tadjs')
+
+# Search for nodes by xpath
+doc.xpath('//*[@id="top"]/div[1]')
+
+```
