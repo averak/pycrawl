@@ -1,5 +1,5 @@
-Crawling with Python
-====================
+PyCrawl
+=======
 
 Script for crawling in Python.
 

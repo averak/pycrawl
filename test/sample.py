@@ -1,8 +1,8 @@
-from crawling import Crawling
+from pycrawl import PyCrawl
 
 
 url = 'https://tabelog.com/osaka/A2701/A270202/27107603/'
-doc = Crawling(url)
+doc = PyCrawl(url)
 
 
 #@ ========== データ抽出（例） ====================
