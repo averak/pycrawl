@@ -37,7 +37,10 @@ doc.tables
 
 ### Scraping Example
 ```python
-# search for nodes by css
+# search for nodes by css selector
+# tag   : css('name')
+# class : css('.name')
+# id    : css('#name')
 doc.css('div')
 doc.css('.main-text')
 doc.css('#tadjs')
