@@ -10,7 +10,6 @@ You can also send forms such as text data, files, and checkboxes.
 
 
 ## Requirement
-
 - Python3
 
 
@@ -79,3 +78,6 @@ doc.send(name='name attribute', value='hello')
 ```sh
 $ pip install pycrawl
 ```
+
+## Contributing
+Bug reports and pull requests are welcome on GitHub at [https://github.com/AjxLab/PyCrawl](https://github.com/AjxLab/PyCrawl).
