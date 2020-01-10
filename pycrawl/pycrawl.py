@@ -158,6 +158,7 @@ class PyCrawl:
         if html == None or html == '':
             html = '<html></html>'
         self.html = html
+        self.url = self.agent.geturl()
         self.doc = lxml.html.fromstring(self.html)
         self.__table_to_dict()
 
