@@ -1,6 +1,6 @@
 from .pycrawl import *
 
-__copyright__    = 'Copyright (C) 2019 Tatsuya Abe'
+__copyright__    = 'Copyright (C) 2020 Tatsuya Abe'
 __version__      = '1.0.0'
 __license__      = 'BSD-3-Clause'
 __author__       = 'Tatsuya Abe'

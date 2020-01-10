@@ -10,6 +10,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='pycrawl',
     packages=['pycrawl'],
+    install_requires=["mechanize", "lxml"],
 
     version='1.0.0',
     license='MIT',

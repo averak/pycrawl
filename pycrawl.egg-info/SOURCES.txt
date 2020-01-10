@@ -1,0 +1,9 @@
+README.md
+setup.py
+pycrawl/__init__.py
+pycrawl/pycrawl.py
+pycrawl.egg-info/PKG-INFO
+pycrawl.egg-info/SOURCES.txt
+pycrawl.egg-info/dependency_links.txt
+pycrawl.egg-info/requires.txt
+pycrawl.egg-info/top_level.txt
