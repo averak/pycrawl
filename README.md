@@ -1,7 +1,7 @@
 PyCrawl
 =======
 
-Script for crawling in Python.
+A simple crawling utility for Python
 
 ## Description
 
@@ -26,24 +26,36 @@ doc = pycrawl.PyCrawl(url)
 
 # access another url
 doc.get('another url')
+# get current url
+doc.url
+# get current site's html
+doc.html
+# get <table> tag's data as dict
+doc.tables
+# ex) doc.tables['予約・お問い合わせ'] => 050-5596-6465
 ```
 
-## Scraping Example
+### Scraping Example
 ```python
-# Search for nodes by css
+# search for nodes by css
 doc.css('div')
 doc.css('.main-text')
 doc.css('#tadjs')
 
-# Search for nodes by xpath
+# search for nodes by xpath
 doc.xpath('//*[@id="top"]/div[1]')
 
-# Other Example
-doc.css('div').css('a')[2].attr('href') # => String Object
-doc.css('p').innerText() # => String Object
-doc.tables  # -> Table Tag to Dict
-
+# other example
+doc.css('div').css('a')[2].attr('href') # => string object
+doc.css('p').innerText() # => string object
 # You do not need to specify "[]" to access the first index
+```
+
+### Submitting Form Example
+```python
+doc.send(name='email', value='test@test.com')
+doc.send(id='password', value='11111111')
+doc.submit(name='loginForm')
 ```
 
 
