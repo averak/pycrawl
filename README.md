@@ -12,8 +12,6 @@ You can also send forms such as text data, files, and checkboxes.
 ## Requirement
 
 - Python3
-- mechanize
-- lxml
 
 
 ## Usage
@@ -59,8 +57,6 @@ doc.css('p').innerText() # => string object
 2. Specify value(int or str) / check(bool) / file_name(str)
 3. call submit() method with form attribute specified
 ```python
-# specify target id / class / name.. attribute
-
 # login
 doc.send(id='id attribute', value='value to send')
 doc.send(id='id attribute', value='value to send')
