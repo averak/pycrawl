@@ -26,10 +26,13 @@ doc = pycrawl.PyCrawl(url)
 
 # access another url
 doc.get('another url')
+
 # get current url
 doc.url
+
 # get current site's html
 doc.html
+
 # get <table> tags as dict
 doc.tables
 # ex) doc.tables['予約・お問い合わせ'] => 050-5596-6465
@@ -52,10 +55,27 @@ doc.css('p').innerText() # => string object
 ```
 
 ### Submitting Form Example
+1. Specify target node's attribute
+2. Specify value(int or str) / check(bool) / file_name(str)
+3. call submit() method with form attribute specified
 ```python
-doc.send(name='email', value='test@test.com')
-doc.send(id='password', value='11111111')
-doc.submit(name='loginForm')
+# specify target id / class / name.. attribute
+
+# login
+doc.send(id='id attribute', value='value to send')
+doc.send(id='id attribute', value='value to send')
+doc.submit(id='id attribute') # submit
+
+# post file
+doc.send(id='id attribute', file_name='target file name')
+
+# checkbox
+doc.send(id='id  attribute', check=True)  # check
+doc.send(id='id  attribute', check=False) # uncheck
+
+# example of specify other attribute
+doc.send(class='class attribute', value=100)
+doc.send(name='name attribute', value='hello')
 ```
 
 
