@@ -69,7 +69,7 @@ doc.send(id='id  attribute', check=True)  # check
 doc.send(id='id  attribute', check=False) # uncheck
 
 # example of specify other attribute
-doc.send(class='class attribute', value=100)
+doc.send(class_='class attribute', value=100)
 doc.send(name='name attribute', value='hello')
 ```
 
