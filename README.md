@@ -30,7 +30,7 @@ doc.get('another url')
 doc.url
 # get current site's html
 doc.html
-# get <table> tag's data as dict
+# get <table> tags as dict
 doc.tables
 # ex) doc.tables['予約・お問い合わせ'] => 050-5596-6465
 ```
