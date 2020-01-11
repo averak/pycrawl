@@ -14,6 +14,17 @@ You can also send forms such as text data, files, and checkboxes.
 
 
 ## Usage
+### Description of Instance Methods
+name       | Description
+-----------|----------------------------------------------
+send       | Set the value you want to submit to the form.
+submit     | Submit form.
+css        | Get node by css selector.
+xpath      | Get node by xpath.
+attr       | Get node's attribute.
+inner_text | Get node's inner text.
+outer_text | Get node's outer text.
+
 ### Simple Example
 ```python
 import pycrawl
@@ -49,7 +60,7 @@ doc.xpath('//*[@id="top"]/div[1]')
 
 # other example
 doc.css('div').css('a')[2].attr('href') # => string object
-doc.css('p').innerText() # => string object
+doc.css('p').inner_text() # => string object
 # You do not need to specify "[]" to access the first index
 ```
 

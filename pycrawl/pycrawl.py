@@ -25,17 +25,17 @@ class PyCrawl:
             else:
                 return PyCrawl(doc=None).attr(name)
 
-        def innerText(self, shaping=True):
+        def inner_text(self, shaping=True):
             if self != []:
-                return self[0].innerText(shaping)
+                return self[0].inner_text(shaping)
             else:
-                return PyCrawl(doc=None).innerText(shaping)
+                return PyCrawl(doc=None).inner_text(shaping)
 
-        def outerText(self):
+        def outer_text(self):
             if self != []:
-                return self[0].outerText()
+                return self[0].outer_text()
             else:
-                return PyCrawl(doc=None).outerText()
+                return PyCrawl(doc=None).outer_text()
 
     def __init__(self, url=None, doc=None, html=None):
         ## -----*----- コンストラクタ -----*----- ##
@@ -48,7 +48,7 @@ class PyCrawl:
         elif doc != None:
             # docを受け取り
             self.doc = doc
-            self.html = self.outerText()
+            self.html = self.outer_text()
             self.__table_to_dict()
         else:
             # htmlを受け取り
@@ -142,14 +142,14 @@ class PyCrawl:
         else:
             return ''
 
-    def innerText(self, shaping=True):
+    def inner_text(self, shaping=True):
         ## -----*----- タグ内（タグ除く）の文字列を取得 -----*----- ##
         if shaping:
             return self.__shaping_string(self.doc.text_content())
         else:
             return self.doc.text
 
-    def outerText(self):
+    def outer_text(self):
         ## -----*----- タグ内（タグ含む）の文字列を取得 -----*----- ##
         return lxml.html.tostring(self.doc, encoding="utf-8").decode('utf-8')
 
