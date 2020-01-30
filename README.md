@@ -1,6 +1,8 @@
 PyCrawl
 =======
 
+[![PyPi](https://badge.fury.io/py/pycrawl.svg)](https://pypi.python.org/pypi/pycrawl/)
+
 A simple crawling utility for Python
 
 ## Description
