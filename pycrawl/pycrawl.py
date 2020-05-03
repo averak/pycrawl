@@ -4,7 +4,7 @@ import lxml.html
 import re
 
 
-class PyCrawl:
+class pycrawl:
     # 特殊配列
     class CrawList(list):
         def xpath(self, locator, single=False):
