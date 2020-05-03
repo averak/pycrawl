@@ -18,6 +18,8 @@ class pycrawl:
         #--------------------------------------------
         self.agent = mechanize.Browser()
         self.agent.keep_alive = False
+        self.agent.set_handle_refresh(False)
+        self.agent.set_handle_equiv(False)
         self.agent.set_handle_robots(False)
 
         # user-agent
@@ -52,7 +54,7 @@ class pycrawl:
         #--------------------------------------------
         self.url = url
         page = self.agent.open(self.url, timeout=self.timeout)
-        html = page.read().decode('utf-8')
+        html = page.read()
         self.__update_params(html)
 
 
