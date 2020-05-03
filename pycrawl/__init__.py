@@ -1,5 +1,4 @@
 from .pycrawl import *
-from carray import *
 
 __copyright__    = 'Copyright (C) 2020 Tatsuya Abe'
 __license__      = 'BSD-3-Clause'

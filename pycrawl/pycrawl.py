@@ -2,6 +2,7 @@
 import mechanize
 import lxml.html
 import re
+from .carray import carray
 
 
 class pycrawl:
@@ -21,7 +22,7 @@ class pycrawl:
 
         # user-agent
         if user_agent is not None:
-            browser.addheaders = [
+            self.agent.addheaders = [
                 ('User-agent', user_agent),
             ]
         # timeout
@@ -50,7 +51,7 @@ class pycrawl:
         #   - url:str -> 対象サイトのURL
         #--------------------------------------------
         self.url = url
-        page = self.agent.open(self.url, timeout)
+        page = self.agent.open(self.url, timeout=self.timeout)
         html = page.read().decode('utf-8')
         self.__update_params(html)
 
@@ -66,7 +67,7 @@ class pycrawl:
         #--------------------------------------------
         self.params.append({})
         for selector, value in opts.items():
-            exec ('self.params[-1]['{0}'] = value'.format(selector))
+            exec ('self.params[-1][\'{0}\'] = value'.format(selector))
 
 
     def submit(self, **opts):
@@ -78,7 +79,7 @@ class pycrawl:
         # フォームの選択
         for selector, value in opts.items():
             try:
-                exec ('self.agent.select_form({0}='{1}')'.format(selector, value))
+                exec ('self.agent.select_form({0}=\'{1}\')'.format(selector, value))
             except:
                 return
 
@@ -182,7 +183,10 @@ class pycrawl:
         # params:
         #   - html:str -> HTML
         #--------------------------------------------
-        self.url = self.agent.geturl()
+        if self.agent._response is None:
+            self.url = ''
+        else:
+            self.url = self.agent.geturl()
         if html == None or html == '':
             html = '<html></html>'
         self.html = html
