@@ -12,7 +12,7 @@ setup(
     packages=['pycrawl'],
     install_requires=["mechanize", "lxml"],
 
-    version='2.2.0',
+    version='2.2.1',
     license='MIT',
 
     author='Tatsuya Abe',
