@@ -34,7 +34,11 @@ outer_text | Get node's outer text.
 import pycrawl
 
 url = 'http://www.example.com/'
-doc = pycrawl.PyCrawl(url)
+doc = pycrawl.PyCrawl(
+	url,
+	user_agent='<user_agent>',
+	timeout=<timeout sec>,
+)
 
 # access another url
 doc.get('another url')
