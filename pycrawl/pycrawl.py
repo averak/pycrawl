@@ -6,7 +6,7 @@ from .carray import carray
 
 
 class pycrawl:
-    def __init__(self, url=None, doc=None, html=None, user_agent=None, timeout=10):
+    def __init__(self, url=None, doc=None, html=None, user_agent=None, timeout=10, encoding='utf-8'):
         #--------------------------------------------
         # コンストラクタ
         # params:
@@ -15,6 +15,7 @@ class pycrawl:
         #   - html:str -> スクレイピングするHTML
         #   - user_agent:str -> user-agent
         #   - timeout:int -> read timeout sec
+        #   - encoding:str -> read encoding
         #--------------------------------------------
         self.agent = mechanize.Browser()
         self.agent.keep_alive = False
@@ -29,6 +30,8 @@ class pycrawl:
             ]
         # timeout
         self.timeout = timeout
+        # encoding
+        self.encoding = encoding
         # クエリパラメータを格納
         self.params = []
 
@@ -54,7 +57,7 @@ class pycrawl:
         #--------------------------------------------
         self.url = url
         page = self.agent.open(self.url, timeout=self.timeout)
-        html = page.read()
+        html = page.read().decode(self.encoding, 'ignore')
         self.__update_params(html)
 
 
@@ -109,7 +112,7 @@ class pycrawl:
 
         # 送信
         self.agent.submit()
-        self.__update_params(self.agent.response().read().decode('utf-8'))
+        self.__update_params(self.agent.response().read().decode(self.encoding, 'ignore'))
 
 
     def xpath(self, locator, single=False):
@@ -176,7 +179,7 @@ class pycrawl:
         #--------------------------------------------
         # タグ内の文字列を抽出
         #--------------------------------------------
-        return lxml.html.tostring(self.doc, encoding='utf-8').decode('utf-8')
+        return lxml.html.tostring(self.doc, encoding=self.encoding).decode(self.encoding, 'ignore')
 
 
     def __update_params(self, html):

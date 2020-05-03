@@ -36,8 +36,9 @@ import pycrawl
 url = 'http://www.example.com/'
 doc = pycrawl.PyCrawl(
 	url,
-	user_agent='<user_agent>',
+	user_agent='<user agent>',
 	timeout=<timeout sec>,
+	encoding=<encoding>,
 )
 
 # access another url
