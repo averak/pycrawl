@@ -155,7 +155,7 @@ class pycrawl:
         if name in self.doc.attrib:
             return self.doc.attrib[name]
         else:
-            return None
+            return ''
 
 
     def inner_text(self, shaping=True):
