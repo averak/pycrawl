@@ -1,6 +1,7 @@
 PyCrawl
 =======
 
+[![build](https://github.com/AjxLab/pycrawl/workflows/build/badge.svg)](https://github.com/AjxLab/pycrawl/actions)
 [![PyPi](https://badge.fury.io/py/pycrawl.svg)](https://pypi.python.org/pypi/pycrawl/)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
