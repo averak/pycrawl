@@ -1,4 +1,4 @@
-PyCrawl
+pycrawl
 =======
 
 [![build](https://github.com/AjxLab/pycrawl/workflows/build/badge.svg)](https://github.com/AjxLab/pycrawl/actions)
