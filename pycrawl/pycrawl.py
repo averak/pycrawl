@@ -72,7 +72,7 @@ class pycrawl:
         #--------------------------------------------
         self.params.append({})
         for selector, value in opts.items():
-            exec ('self.params[-1][\'{0}\'] = value'.format(selector))
+            exec ('self.params[-1]["%s"] = value' % selector)
 
 
     def submit(self, **opts):
@@ -84,7 +84,7 @@ class pycrawl:
         # フォームの選択
         for selector, value in opts.items():
             try:
-                exec ('self.agent.select_form({0}=\'{1}\')'.format(selector, value))
+                exec ('self.agent.select_form(%s="%s")' % (selector, value))
             except:
                 return
 
