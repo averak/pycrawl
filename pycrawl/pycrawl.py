@@ -69,10 +69,11 @@ class pycrawl:
         #       - テキスト/数値    => (selector, value:string/int/float)
         #       - チェックボックス => (selector, check:bool)
         #       - ファイル         => (selector, file_name:str)
+        #       - selector => name / id / type / nr / label / kind / predicate
         #--------------------------------------------
         self.params.append({})
         for selector, value in opts.items():
-            exec ('self.params[-1]["%s"] = value' % selector)
+            exec('self.params[-1]["%s"] = value' % selector)
 
 
     def submit(self, **opts):
@@ -80,17 +81,33 @@ class pycrawl:
         # フォーム送信
         # params:
         #   - opts:dict -> {selector: name:str}
+        #       - selector => id, class_, name, nr...
         #--------------------------------------------
         # フォームの選択
         for selector, value in opts.items():
-            try:
-                exec ('self.agent.select_form(%s="%s")' % (selector, value))
-            except:
-                return
+            if isinstance(value, int):
+                exec('self.agent.select_form(%s=%d)' % (selector, value))
+            else:
+                exec('self.agent.select_form(%s="%s")' % (selector, value))
 
-        # フォームの送信
+        self.agent.form.set_all_readonly(False)
+        button = None
+
         for param in self.params:
-            selector = list(param.keys())
+            # テキスト，数値など
+            if 'value' in param:
+                value = param.pop('value')
+                if value is None:  continue
+                self.agent.form[list(param.values())[0]] = value
+
+            # チェックボックス
+            if 'check' in param:
+                check = param.pop('check')
+                if check is None:  continue
+                self.agent.form[list(param.values())[0]].selected = check
+
+
+            #----------------------------------------
             if 'value' in param:
                 # テキスト，数値など
                 selector.remove('value')
@@ -115,11 +132,37 @@ class pycrawl:
         self.__update_params(self.agent.response().read().decode(self.encoding, 'ignore'))
 
 
+    def __find_ctrl(**attr):
+        #--------------------------------------------
+        # Controlを取得
+        # params:
+        #   - attr -> HTML attr（※ classは，class_と指定）
+        # return:
+        #   - mechanize._form_controls.xxxxControl
+        #--------------------------------------------
+        try:
+            return  agent.form.find_control(**attr)
+        except:
+            pass
+
+        # 属性から検索
+        for key, value in attr.items():
+            if key == 'class_': key = 'class'
+
+            for ctrl in agent.form.controls:
+                if key in ctrl.attrs:
+                    if str(value) in str(ctrl.attrs[key]).split(' '):
+                        return ctrl
+        return None
+
+
     def xpath(self, locator, single=False):
         #--------------------------------------------
         # XPathを指定しノードを抽出
         # params:
         #   - locator:str -> XPath
+        # return:
+        #   - pycrawl.carray
         #--------------------------------------------
         nodes = carray([pycrawl(doc=node) for node in self.doc.xpath(locator)])
         if single:
@@ -138,6 +181,8 @@ class pycrawl:
         # CSSセレクタを指定しノードを抽出
         # params:
         #   - locator:str -> css selector
+        # return:
+        #   - pycrawl.carray
         #--------------------------------------------
         nodes = carray([pycrawl(doc=node) for node in self.doc.cssselect(locator)])
         if single:
@@ -156,6 +201,8 @@ class pycrawl:
         # ノードの属性情報を抽出
         # params:
         #   - name:str -> node's attribute
+        # return:
+        #   - 指定した属性の文字列
         #--------------------------------------------
         if name in self.doc.attrib:
             return self.doc.attrib[name]
@@ -168,6 +215,8 @@ class pycrawl:
         # タグ内の文字列を抽出
         # params:
         #   - shaping:bool -> 文字列を整形するか
+        # return:
+        #   - タグ内の文字列
         #--------------------------------------------
         if shaping:
             return self.__shaping_string(self.doc.text_content())
@@ -177,7 +226,9 @@ class pycrawl:
 
     def outer_text(self):
         #--------------------------------------------
-        # タグ内の文字列を抽出
+        # タグ外の文字列を抽出
+        # return:
+        #   - タグ外の文字列
         #--------------------------------------------
         return lxml.html.tostring(self.doc, encoding=self.encoding).decode(self.encoding, 'ignore')
 
@@ -222,6 +273,8 @@ class pycrawl:
         # 文字列を整形
         # params:
         #   - text:str -> 整形対象の文字列
+        # return:
+        #   - 整形後の文字列
         #--------------------------------------------
         # 余分な改行，空白を全て削除
         text = str(text)
