@@ -138,7 +138,7 @@ class pycrawl:
 
         # 属性から検索
         for key, value in attr.items():
-            if key == 'class_': key = 'class'
+            key = key.replace('_', '')
 
             for ctrl in self.agent.form.controls:
                 if key in ctrl.attrs:
