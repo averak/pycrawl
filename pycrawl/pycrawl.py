@@ -131,6 +131,7 @@ class pycrawl:
         # return:
         #   - mechanize._form_controls.xxxxControl
         #--------------------------------------------
+        attr = {list(attr.items())[0][0].replace('_', ''): list(attr.items())[0][1]}
         try:
             return self.agent.form.find_control(**attr)
         except:
@@ -141,9 +142,12 @@ class pycrawl:
             key = key.replace('_', '')
 
             for ctrl in self.agent.form.controls:
-                if key in ctrl.attrs:
-                    if str(value) in str(ctrl.attrs[key]).split(' '):
-                        return ctrl
+                try:
+                    if key in ctrl.attrs:
+                        if str(value) in str(ctrl.attrs[key]).split(' '):
+                            return ctrl
+                except:
+                    continue
         return None
 
 
