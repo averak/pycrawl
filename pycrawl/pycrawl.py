@@ -113,7 +113,7 @@ class pycrawl:
             # ファイルアップロード
             if 'file_name' in param:
                 file_name = param.pop('file_name')
-                if check is None:  continue
+                if file_name is None:  continue
                 ctrl = self.__find_ctrl(**param)
                 if not ctrl is None:
                     ctrl.file_name = file_name
