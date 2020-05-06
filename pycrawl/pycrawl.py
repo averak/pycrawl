@@ -139,15 +139,17 @@ class pycrawl:
 
         # 属性から検索
         for key, value in attr.items():
-            key = key.replace('_', '')
-
             for ctrl in self.agent.form.controls:
-                try:
+                if 'attrs' in vars(ctrl):
                     if key in ctrl.attrs:
                         if str(value) in str(ctrl.attrs[key]).split(' '):
                             return ctrl
-                except:
-                    continue
+                else:
+                    try:
+                        id = self.xpath('//*[@%s="%s"]' % (key, value)).attr('id')
+                        return self.agent.form.find_control(id=id)
+                    except:
+                        continue
         return None
 
 
