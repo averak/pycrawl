@@ -69,10 +69,11 @@ class pycrawl:
         #       - テキスト/数値    => (selector, value:string/int/float)
         #       - チェックボックス => (selector, check:bool)
         #       - ファイル         => (selector, file_name:str)
+        #       - selector => name / id / type / nr / label / kind / predicate
         #--------------------------------------------
         self.params.append({})
         for selector, value in opts.items():
-            exec ('self.params[-1]["%s"] = value' % selector)
+            exec('self.params[-1]["%s"] = value' % selector)
 
 
     def submit(self, **opts):
@@ -80,39 +81,76 @@ class pycrawl:
         # フォーム送信
         # params:
         #   - opts:dict -> {selector: name:str}
+        #       - selector => id, class_, name, nr...
         #--------------------------------------------
         # フォームの選択
         for selector, value in opts.items():
-            try:
-                exec ('self.agent.select_form(%s="%s")' % (selector, value))
-            except:
-                return
+            if isinstance(value, int):
+                exec('self.agent.select_form(%s=%d)' % (selector, value))
+            else:
+                exec('self.agent.select_form(%s="%s")' % (selector, value))
 
-        # フォームの送信
+        self.agent.form.set_all_readonly(False)
+        button = None
+
         for param in self.params:
-            selector = list(param.keys())
+            # テキスト，数値など
             if 'value' in param:
-                # テキスト，数値など
-                selector.remove('value')
-                selector = param[selector[0]]
-                if param['value'] != None:
-                    self.agent.form[selector] = param['value']
-            if 'check' in param:
-                # チェックボックス
-                selector.remove('check')
-                selector = param[selector[0]]
-                if param['check'] != None:
-                    self.agent.form[selector].selected = param['check']
-            if 'file_name' in param:
-                # チェックボックス
-                selector.remove('file_name')
-                selector = param[selector[0]]
-                if param['file_name'] != None:
-                    self.agent.form[selector].file_name = param['file_name']
+                value = param.pop('value')
+                if value is None:  continue
+                ctrl = self.__find_ctrl(**param)
+                if not ctrl is None:
+                    ctrl.value = value
 
-        # 送信
+            # チェックボックス
+            if 'check' in param:
+                check = param.pop('check')
+                if check is None:  continue
+                ctrl = self.__find_ctrl(**param)
+                if not ctrl is None:
+                    ctrl.selected = check
+
+            # ファイルアップロード
+            if 'file_name' in param:
+                file_name = param.pop('file_name')
+                if file_name is None:  continue
+                ctrl = self.__find_ctrl(**param)
+                if not ctrl is None:
+                    ctrl.file_name = file_name
+
+        # Submit
         self.agent.submit()
         self.__update_params(self.agent.response().read().decode(self.encoding, 'ignore'))
+
+
+    def __find_ctrl(self, **attr):
+        #--------------------------------------------
+        # Controlを取得
+        # params:
+        #   - attr -> HTML attr（※ classは，class_と指定）
+        # return:
+        #   - mechanize._form_controls.xxxxControl
+        #--------------------------------------------
+        attr = {list(attr.items())[0][0].replace('_', ''): list(attr.items())[0][1]}
+        try:
+            return self.agent.form.find_control(**attr)
+        except:
+            pass
+
+        # 属性から検索
+        for key, value in attr.items():
+            for ctrl in self.agent.form.controls:
+                if 'attrs' in vars(ctrl):
+                    if key in ctrl.attrs:
+                        if str(value) in str(ctrl.attrs[key]).split(' '):
+                            return ctrl
+                else:
+                    try:
+                        id = self.xpath('//*[@%s="%s"]' % (key, value)).attr('id')
+                        return self.agent.form.find_control(id=id)
+                    except:
+                        continue
+        return None
 
 
     def xpath(self, locator, single=False):
@@ -120,6 +158,8 @@ class pycrawl:
         # XPathを指定しノードを抽出
         # params:
         #   - locator:str -> XPath
+        # return:
+        #   - pycrawl.carray
         #--------------------------------------------
         nodes = carray([pycrawl(doc=node) for node in self.doc.xpath(locator)])
         if single:
@@ -138,6 +178,8 @@ class pycrawl:
         # CSSセレクタを指定しノードを抽出
         # params:
         #   - locator:str -> css selector
+        # return:
+        #   - pycrawl.carray
         #--------------------------------------------
         nodes = carray([pycrawl(doc=node) for node in self.doc.cssselect(locator)])
         if single:
@@ -156,6 +198,8 @@ class pycrawl:
         # ノードの属性情報を抽出
         # params:
         #   - name:str -> node's attribute
+        # return:
+        #   - 指定した属性の文字列
         #--------------------------------------------
         if name in self.doc.attrib:
             return self.doc.attrib[name]
@@ -168,6 +212,8 @@ class pycrawl:
         # タグ内の文字列を抽出
         # params:
         #   - shaping:bool -> 文字列を整形するか
+        # return:
+        #   - タグ内の文字列
         #--------------------------------------------
         if shaping:
             return self.__shaping_string(self.doc.text_content())
@@ -177,7 +223,9 @@ class pycrawl:
 
     def outer_text(self):
         #--------------------------------------------
-        # タグ内の文字列を抽出
+        # タグ外の文字列を抽出
+        # return:
+        #   - タグ外の文字列
         #--------------------------------------------
         return lxml.html.tostring(self.doc, encoding=self.encoding).decode(self.encoding, 'ignore')
 
@@ -222,6 +270,8 @@ class pycrawl:
         # 文字列を整形
         # params:
         #   - text:str -> 整形対象の文字列
+        # return:
+        #   - 整形後の文字列
         #--------------------------------------------
         # 余分な改行，空白を全て削除
         text = str(text)
