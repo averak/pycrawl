@@ -98,41 +98,32 @@ class pycrawl:
             if 'value' in param:
                 value = param.pop('value')
                 if value is None:  continue
-                self.agent.form[list(param.values())[0]] = value
+                ctrl = self.__find_ctrl(**param)
+                if not ctrl is None:
+                    ctrl.value = value
 
             # チェックボックス
             if 'check' in param:
                 check = param.pop('check')
                 if check is None:  continue
-                self.agent.form[list(param.values())[0]].selected = check
+                ctrl = self.__find_ctrl(**param)
+                if not ctrl is None:
+                    ctrl.selected = check
 
-
-            #----------------------------------------
-            if 'value' in param:
-                # テキスト，数値など
-                selector.remove('value')
-                selector = param[selector[0]]
-                if param['value'] != None:
-                    self.agent.form[selector] = param['value']
-            if 'check' in param:
-                # チェックボックス
-                selector.remove('check')
-                selector = param[selector[0]]
-                if param['check'] != None:
-                    self.agent.form[selector].selected = param['check']
+            # ファイルアップロード
             if 'file_name' in param:
-                # チェックボックス
-                selector.remove('file_name')
-                selector = param[selector[0]]
-                if param['file_name'] != None:
-                    self.agent.form[selector].file_name = param['file_name']
+                file_name = param.pop('file_name')
+                if check is None:  continue
+                ctrl = self.__find_ctrl(**param)
+                if not ctrl is None:
+                    ctrl.file_name = file_name
 
-        # 送信
+        # Submit
         self.agent.submit()
         self.__update_params(self.agent.response().read().decode(self.encoding, 'ignore'))
 
 
-    def __find_ctrl(**attr):
+    def __find_ctrl(self, **attr):
         #--------------------------------------------
         # Controlを取得
         # params:
@@ -141,7 +132,7 @@ class pycrawl:
         #   - mechanize._form_controls.xxxxControl
         #--------------------------------------------
         try:
-            return  agent.form.find_control(**attr)
+            return self.agent.form.find_control(**attr)
         except:
             pass
 
@@ -149,7 +140,7 @@ class pycrawl:
         for key, value in attr.items():
             if key == 'class_': key = 'class'
 
-            for ctrl in agent.form.controls:
+            for ctrl in self.agent.form.controls:
                 if key in ctrl.attrs:
                     if str(value) in str(ctrl.attrs[key]).split(' '):
                         return ctrl
