@@ -20,10 +20,10 @@ setup(
 
     url='https://github.com/AjxLab/PyCrawl',
 
-    desription='A simple browser automation and crawling utility for Python',
+    desription='A simple crawling utility for Python',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    keywords='crawling crawler scraping webdriver',
+    keywords='crawling crawler scraping',
 
     classifiers=[
         'License :: OSI Approved :: MIT License',
