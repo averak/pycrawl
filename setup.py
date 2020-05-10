@@ -10,7 +10,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='pycrawl',
     packages=['pycrawl'],
-    install_requires=["mechanize", "lxml"],
+    install_requires=['mechanize', 'lxml'],
 
     version='2.4.0',
     license='MIT',
@@ -20,10 +20,10 @@ setup(
 
     url='https://github.com/AjxLab/PyCrawl',
 
-    desription='A simple crawling utility for Python.',
+    desription='A simple browser automation and crawling utility for Python',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    keywords='crawling crawler scraping',
+    keywords='crawling crawler scraping webdriver',
 
     classifiers=[
         'License :: OSI Approved :: MIT License',

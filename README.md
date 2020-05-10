@@ -5,7 +5,7 @@ pycrawl
 [![PyPi](https://badge.fury.io/py/pycrawl.svg)](https://pypi.python.org/pypi/pycrawl/)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
-A simple crawling utility for Python
+A simple browser automation and crawling utility for Python
 
 ## Description
 
