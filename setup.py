@@ -10,9 +10,9 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='pycrawl',
     packages=['pycrawl'],
-    install_requires=['mechanize', 'lxml'],
+    install_requires=['mechanize', 'lxml', 'cssselect'],
 
-    version='2.4.0',
+    version='2.4.1',
     license='MIT',
 
     author='Tatsuya Abe',
