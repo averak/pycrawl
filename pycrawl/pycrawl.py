@@ -44,6 +44,7 @@ class pycrawl:
         if doc != None:
             self.doc = doc
             self.html = self.outer_text()
+            self.__update_params(self.html)
             return
         ## 3. HTMLからagentを設定
         self.__update_params(html)
