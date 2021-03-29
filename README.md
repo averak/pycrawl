@@ -1,7 +1,6 @@
-pycrawl
-=======
+# pycrawl
 
-[![build](https://github.com/AjxLab/pycrawl/workflows/build/badge.svg)](https://github.com/AjxLab/pycrawl/actions)
+[![build](https://github.com/averak/pycrawl/workflows/build/badge.svg)](https://github.com/averak/pycrawl/actions)
 [![PyPi](https://badge.fury.io/py/pycrawl.svg)](https://pypi.python.org/pypi/pycrawl/)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
@@ -12,24 +11,26 @@ A simple crawling utility for Python
 This project enables site crawling and data extraction with xpath and css selectors.
 You can also send forms such as text data, files, and checkboxes.
 
-
 ## Requirement
+
 - Python3
 
-
 ## Usage
+
 ### Description of Instance Methods
-name       | Description
------------|----------------------------------------------
-send       | Set the value you want to submit to the form.
-submit     | Submit form.
-css        | Get node by css selector.
-xpath      | Get node by xpath.
-attr       | Get node's attribute.
-inner_text | Get node's inner text.
-outer_text | Get node's outer text.
+
+| name       | Description                                   |
+| ---------- | --------------------------------------------- |
+| send       | Set the value you want to submit to the form. |
+| submit     | Submit form.                                  |
+| css        | Get node by css selector.                     |
+| xpath      | Get node by xpath.                            |
+| attr       | Get node's attribute.                         |
+| inner_text | Get node's inner text.                        |
+| outer_text | Get node's outer text.                        |
 
 ### Simple Example
+
 ```python
 import pycrawl
 
@@ -55,6 +56,7 @@ doc.tables
 ```
 
 ### Scraping Example
+
 ```python
 # search for nodes by css selector
 # tag   : css('name')
@@ -74,9 +76,11 @@ doc.css('p').inner_text() # => string object
 ```
 
 ### Submitting Form Example
+
 1. Specify target node's attribute
 2. Specify value(int or str) / check(bool) / file_name(str)
 3. call submit() with form attribute specified
+
 ```python
 # login
 doc.send(id='id attribute', value='value to send')
@@ -96,11 +100,12 @@ doc.send(class_='class attribute', value=100)
 # when specifying the class attribute, please write "class_ =".
 ```
 
-
 ## Installation
+
 ```sh
 $ pip install pycrawl
 ```
 
 ## Contributing
-Bug reports and pull requests are welcome on GitHub at [https://github.com/AjxLab/PyCrawl](https://github.com/AjxLab/PyCrawl).
+
+Bug reports and pull requests are welcome on GitHub at [https://github.com/averak/pycrawl](https://github.com/averak/pycrawl).
