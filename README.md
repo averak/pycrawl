@@ -52,7 +52,7 @@ doc.url
 doc.html
 
 # get <table> tags as dict
-doc.tables
+doc.table
 ```
 
 ### Scraping Example

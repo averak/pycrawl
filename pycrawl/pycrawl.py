@@ -169,7 +169,7 @@ class PyCrawl:
             html = '<html></html>'
         self.html = html
         self.node = lxml.html.fromstring(self.html)
-        self.tables = self.__table_to_dict()
+        self.table = self.__table_to_dict()
 
     def __table_to_dict(self) -> dict:
         """ convert <table> to dict"""

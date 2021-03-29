@@ -22,13 +22,17 @@ class TestAPI(unittest.TestCase):
         node = lxml.html.fromstring(self.sample_html)
         spider = PyCrawl(node=node)
         self.assertEqual(
-            re.sub(r'[\n ]', '', self.sample_html),
-            re.sub(r'[\n ]', '', spider.outer_text())
+            re.sub(r"[\n ]", "", self.sample_html),
+            re.sub(r"[\n ]", "", spider.outer_text())
         )
 
     def test_create_with_html(self):
         spider = PyCrawl(html=self.sample_html)
         self.assertEqual(self.sample_html, spider.html)
+
+    def test_create_error(self):
+        with self.assertRaises(Exception):
+            PyCrawl()
 
     def test_send_params(self):
         spider = PyCrawl(html=self.sample_html)
@@ -39,7 +43,7 @@ class TestAPI(unittest.TestCase):
 
     def test_find_node_with_css(self):
         spider = PyCrawl(html=self.sample_html)
-        self.assertEqual(6, len(spider.css('p')))
+        self.assertEqual(6, len(spider.css("p")))
 
     def test_find_node_with_xpath(self):
         spider = PyCrawl(html=self.sample_html)
@@ -47,15 +51,22 @@ class TestAPI(unittest.TestCase):
 
     def test_find_node_with_attr(self):
         spider = PyCrawl(html=self.sample_html)
-        self.assertEqual('sample text 3', spider.css('#test_id').inner_text())
-        self.assertEqual('sample text 4', spider.css('.test_class').inner_text())
+        self.assertEqual("sample text 3", spider.css("#test_id").inner_text())
+        self.assertEqual("sample text 4", spider.css(".test_class").inner_text())
 
     def test_find_deep_node(self):
         spider = PyCrawl(html=self.sample_html)
-        self.assertEqual('sample text 5', spider.css('div').css('p').inner_text())
-        self.assertEqual('sample text 5', spider.css('div').css('p')[0].inner_text())
-        self.assertEqual('sample text 6', spider.css('div').css('p')[1].inner_text())
+        self.assertEqual("sample text 5", spider.css("div").css("p").inner_text())
+        self.assertEqual("sample text 5", spider.css("div").css("p")[0].inner_text())
+        self.assertEqual("sample text 6", spider.css("div").css("p")[1].inner_text())
 
     def test_find_node_attr(self):
         spider = PyCrawl(html=self.sample_html)
-        self.assertEqual(self.sample_url, spider.css('a').attr("href"))
+        self.assertEqual(self.sample_url, spider.css("a").attr("href"))
+
+    def test_extract_table(self):
+        spider = PyCrawl(html=self.sample_html)
+        self.assertEqual("Alice", spider.table["name"])
+        self.assertEqual("20", spider.table["age"])
+
+
