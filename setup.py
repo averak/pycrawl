@@ -7,7 +7,7 @@ except IOError:
 
 setup(
     name="pycrawl",
-    version="2.6.0",
+    version="3.1.0",
     description="A simple crawling utility for Python",
     license="MIT",
     author="averak",
