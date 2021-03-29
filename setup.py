@@ -1,32 +1,24 @@
-from setuptools import setup
-from codecs import open
-from os import path
+from setuptools import setup, find_packages
 
-here = path.abspath(path.dirname(__file__))
-
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+try:
+    long_description = open("README.rst").read()
+except IOError:
+    long_description = ""
 
 setup(
-    name='pycrawl',
-    packages=['pycrawl'],
-    install_requires=['mechanize', 'lxml', 'cssselect'],
-
-    version='2.6.0',
-    license='MIT',
-
-    author='Tatsuya Abe',
-    author_email='abe12@mccc.jp',
-
-    url='https://github.com/AjxLab/PyCrawl',
-
-    desription='A simple crawling utility for Python',
+    name="pycrawl",
+    version="2.6.0",
+    description="A simple crawling utility for Python",
+    license="MIT",
+    author="averak",
+    packages=find_packages(),
+    package_data={},
+    install_requires=["mechanize", "lxml", "cssselect"],
     long_description=long_description,
-    long_description_content_type='text/markdown',
-    keywords='crawling crawler scraping',
-
+    keywords="crawling scraping spider",
     classifiers=[
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.7',
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.8",
     ],
 )
+
