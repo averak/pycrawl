@@ -31,12 +31,15 @@ class PyCrawl:
         if self.url is not None:
             self.get(self.url)
         # 2. set agent with node
-        if self.node is not None:
+        elif self.node is not None:
             self.html = self.outer_text()
             self.__update_params(self.html)
         # 3. set agent with HTML
-        if self.html is not None:
+        elif self.html is not None:
             self.__update_params(self.html)
+        # 4. error
+        else:
+            raise ValueError("Please specify one of url, node, html")
 
     def get(self, url: str) -> None:
         """ access the target URL"""
@@ -126,43 +129,15 @@ class PyCrawl:
                         continue
         return None
 
-    def xpath(self, locator, single=False):
-        # --------------------------------------------
-        # XPathを指定しノードを抽出
-        # params:
-        #   - locator:str -> XPath
-        # return:
-        #   - PyCrawl.carray
-        # --------------------------------------------
-        nodes = carray([PyCrawl(node=node) for node in self.node.xpath(locator)])
-        if single:
-            # シングルノード
-            if nodes == []:
-                return carray()
-            else:
-                return nodes[0]
-        else:
-            # 複数ノード
-            return nodes
+    def xpath(self, locator: str) -> list:
+        """ extract nodes with xpath"""
+        result: carray = carray([PyCrawl(node=node) for node in self.node.xpath(locator)])
+        return result
 
-    def css(self, locator, single=False):
-        # --------------------------------------------
-        # CSSセレクタを指定しノードを抽出
-        # params:
-        #   - locator:str -> css selector
-        # return:
-        #   - PyCrawl.carray
-        # --------------------------------------------
-        nodes = carray([PyCrawl(node=node) for node in self.node.cssselect(locator)])
-        if single:
-            # シングルノード
-            if nodes == []:
-                return carray()
-            else:
-                return nodes[0]
-        else:
-            # 複数ノード
-            return nodes
+    def css(self, locator: str) -> list:
+        """ extract nodes with css"""
+        result: carray = carray([PyCrawl(node=node) for node in self.node.cssselect(locator)])
+        return result
 
     def attr(self, attr: str) -> str:
         """ extract string of node attribute"""
@@ -216,8 +191,9 @@ class PyCrawl:
     def __shaping_string(self, text: str) -> str:
         """ remove extra line breaks and whitespace """
         result = str(text)
-        result = result.replace(' ', ' ')
+        result = re.sub(' ', ' ', result)
         result = re.sub(r'\s+', ' ', result)
-        result = result.replace('\n \n', '\n').replace('\n ', '\n').replace('\r', '\n')
-        result = re.sub(r'\n+', '\n', result)
-        return result.replace('\t', '').strip()
+        result = re.sub(r'\n[\n\r ]*', '\n', result)
+        result = re.sub(r'\t', '', result)
+        result = result.strip()
+        return result

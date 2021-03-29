@@ -1,13 +1,13 @@
 class carray(list):
-    def xpath(self, locator, single=False):
+    def xpath(self, locator: str):
         if self != []:
-            return self[0].xpath(locator, single)
+            return self[0].xpath(locator)
         else:
             return carray()
 
-    def css(self, locator, single=False):
+    def css(self, locator: str):
         if self != []:
-            return self[0].css(locator, single)
+            return self[0].css(locator)
         else:
             return carray()
 
