@@ -35,7 +35,7 @@ You can also send forms such as text data, files, and checkboxes.
 import pycrawl
 
 url = 'http://www.example.com/'
-doc = pycrawl.pycrawl(
+doc = pycrawl.PyCrawl(
 	url,
 	user_agent='<user agent>',
 	timeout=<timeout sec>,
