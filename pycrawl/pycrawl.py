@@ -107,7 +107,7 @@ class PyCrawl:
         attr = {list(attr.items())[0][0].replace('_', ''): list(attr.items())[0][1]}
         try:
             return self.agent.form.find_control(**attr)
-        except:
+        except Exception:
             pass
 
         # 属性から検索
@@ -121,7 +121,7 @@ class PyCrawl:
                     try:
                         id = self.xpath('//*[@%s="%s"]' % (key, value)).attr('id')
                         return self.agent.form.find_control(id=id)
-                    except:
+                    except Exception:
                         continue
         return None
 
@@ -207,7 +207,7 @@ class PyCrawl:
             self.url = ''
         else:
             self.url = self.agent.geturl()
-        if html == None or html == '':
+        if html is None or html == '':
             html = '<html></html>'
         self.html = html
         self.node = lxml.html.fromstring(self.html)
