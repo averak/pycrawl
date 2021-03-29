@@ -70,7 +70,7 @@ class PyCrawl:
 
         # set params
         for param in self.params:
-            if None in param.values:
+            if None in param.values():
                 continue
 
             for key in self.__allowed_param_keys():
@@ -78,7 +78,10 @@ class PyCrawl:
                     send_value = param.pop(key)
                     ctrl = self.__find_ctrl(**param)
                     if ctrl is not None:
-                        exec("ctrl.%s = %s" % (key, send_value))
+                        if isinstance(send_value, (int, str)):
+                            exec("ctrl.%s = \"%s\"" % (key, send_value))
+                        else:
+                            print("ctrl.%s = %s" % (key, send_value), ctrl)
 
         # Submit
         self.agent.submit()

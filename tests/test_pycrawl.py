@@ -68,3 +68,11 @@ class TestAPI(unittest.TestCase):
         spider = PyCrawl(html=self.sample_html)
         self.assertEqual("Alice", spider.table["name"])
         self.assertEqual("20", spider.table["age"])
+
+    # @unittest.skip("TEST SKIP")
+    def test_submit_form(self):
+        spider = PyCrawl(url="https://jkorpela.fi/forms/testing.html")
+        spider.send(name="Comments", value="hello")
+        # spider.send(name="box", selected=True)
+        spider.submit(method="POST")
+        self.assertEqual("hello", spider.table["Comments"])
