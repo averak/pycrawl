@@ -68,5 +68,3 @@ class TestAPI(unittest.TestCase):
         spider = PyCrawl(html=self.sample_html)
         self.assertEqual("Alice", spider.table["name"])
         self.assertEqual("20", spider.table["age"])
-
-

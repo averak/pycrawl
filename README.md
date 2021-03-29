@@ -78,7 +78,7 @@ doc.css('p').inner_text() # => string object
 ### Submitting Form Example
 
 1. Specify target node's attribute
-2. Specify value(int or str) / check(bool) / file_name(str)
+2. Specify value(int or str) / selected(bool) / file_name(str)
 3. call submit() with form attribute specified
 
 ```python
@@ -91,8 +91,8 @@ doc.submit(id='id attribute') # submit
 doc.send(id='id attribute', file_name='target file name')
 
 # checkbox
-doc.send(id='id attribute', check=True)  # check
-doc.send(id='id attribute', check=False) # uncheck
+doc.send(id='id attribute', selected=True)  # check
+doc.send(id='id attribute', selected=False) # uncheck
 
 # example of specify other attribute
 doc.send(name='name attribute', value='hello')
