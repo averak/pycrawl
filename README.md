@@ -1,6 +1,7 @@
 # pycrawl
 
 [![build](https://github.com/averak/pycrawl/workflows/build/badge.svg)](https://github.com/averak/pycrawl/actions)
+[![code check](https://github.com/averak/pycrawl/workflows/code%20check/badge.svg)](https://github.com/averak/pycrawl/actions)
 [![PyPi](https://badge.fury.io/py/pycrawl.svg)](https://pypi.python.org/pypi/pycrawl/)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 

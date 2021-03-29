@@ -1,4 +1,4 @@
-name: build
+name: code check
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install
         run: |
-          python setup.py install
-      - name: Run test
+          pip install flake8
+      - name: Run lint
         run: |
-          python -m unittest discover tests
+          flake8 --show-source .
