@@ -15,6 +15,7 @@ class PyCrawl:
         self.timeout: int = timeout
         self.encoding: str = encoding
         self.params: list = []
+        self.tables: list = {}
 
         # create mechanize object
         self.agent = mechanize.Browser()
@@ -52,7 +53,7 @@ class PyCrawl:
             params[selector] = value
         self.params.append(params)
 
-    def submit(self, **opts):
+    def submit(self, **opts) -> None:
         """ submit the form data """
         # css selector: ["id", "class_", "name", "nr"...]
         for selector, value in opts.items():
@@ -163,46 +164,28 @@ class PyCrawl:
             # 複数ノード
             return nodes
 
-    def attr(self, name):
-        # --------------------------------------------
-        # ノードの属性情報を抽出
-        # params:
-        #   - name:str -> node's attribute
-        # return:
-        #   - 指定した属性の文字列
-        # --------------------------------------------
-        if name in self.node.attrib:
-            return self.node.attrib[name]
+    def attr(self, attr: str) -> str:
+        """ extract string of node attribute"""
+        if attr in self.node.attrib:
+            return self.node.attrib[attr]
         else:
             return ''
 
-    def inner_text(self, shaping=True):
-        # --------------------------------------------
-        # タグ内の文字列を抽出
-        # params:
-        #   - shaping:bool -> 文字列を整形するか
-        # return:
-        #   - タグ内の文字列
-        # --------------------------------------------
+    def inner_text(self, shaping: bool = True) -> str:
+        """ extract inner text"""
         if shaping:
             return self.__shaping_string(self.node.text_content())
         else:
             return self.node.text
 
-    def outer_text(self):
-        # --------------------------------------------
-        # タグ外の文字列を抽出
-        # return:
-        #   - タグ外の文字列
-        # --------------------------------------------
-        return lxml.html.tostring(self.node, encoding=self.encoding).decode(self.encoding, 'ignore')
+    def outer_text(self) -> str:
+        """ extract outer text"""
+        result = lxml.html.tostring(self.node, encoding=self.encoding)
+        result = result.decode(self.encoding, 'ignore')
+        return result
 
-    def __update_params(self, html):
-        # --------------------------------------------
-        # パラメータを更新
-        # params:
-        #   - html:str -> HTML
-        # --------------------------------------------
+    def __update_params(self, html: str) -> None:
+        """ update self params"""
         if self.agent._response is None:
             self.url = ''
         else:
@@ -211,37 +194,30 @@ class PyCrawl:
             html = '<html></html>'
         self.html = html
         self.node = lxml.html.fromstring(self.html)
-        self.__table_to_dict()
+        self.tables = self.__table_to_dict()
 
-    def __table_to_dict(self):
-        # --------------------------------------------
-        # table属性をDictに格納
-        # --------------------------------------------
-        self.tables = {}
+    def __table_to_dict(self) -> dict:
+        """ convert <table> to dict"""
+        result: dict = {}
 
         for tr in self.node.cssselect('tr'):
             if tr.cssselect('th') != [] and tr.cssselect('td') != []:
                 key = self.__shaping_string(tr.cssselect('th')[0].text_content())
                 value = self.__shaping_string(tr.cssselect('td')[0].text_content())
-                self.tables[key.replace('\n', '').replace(' ', '')] = value
+                result[key.replace('\n', '').replace(' ', '')] = value
         for dl in self.node.cssselect('dl'):
             if dl.cssselect('dt') != [] and dl.cssselect('dd') != []:
                 key = self.__shaping_string(dl.cssselect('dt')[0].text_content())
                 value = self.__shaping_string(dl.cssselect('dd')[0].text_content())
-                self.tables[key.replace('\n', '').replace(' ', '')] = value
+                result[key.replace('\n', '').replace(' ', '')] = value
 
-    def __shaping_string(self, text):
-        # --------------------------------------------
-        # 文字列を整形
-        # params:
-        #   - text:str -> 整形対象の文字列
-        # return:
-        #   - 整形後の文字列
-        # --------------------------------------------
-        # 余分な改行，空白を全て削除
-        text = str(text)
-        text = text.replace(' ', ' ')
-        text = re.sub(r'\s+', ' ', text)
-        text = text.replace('\n \n', '\n').replace('\n ', '\n').replace('\r', '\n')
-        text = re.sub(r'\n+', '\n', text)
-        return text.replace('\t', '').strip()
+        return result
+
+    def __shaping_string(self, text: str) -> str:
+        """ remove extra line breaks and whitespace """
+        result = str(text)
+        result = result.replace(' ', ' ')
+        result = re.sub(r'\s+', ' ', result)
+        result = result.replace('\n \n', '\n').replace('\n ', '\n').replace('\r', '\n')
+        result = re.sub(r'\n+', '\n', result)
+        return result.replace('\t', '').strip()
